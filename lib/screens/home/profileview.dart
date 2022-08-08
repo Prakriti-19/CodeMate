@@ -11,44 +11,34 @@ class prof extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Your Profile",style: TextStyle(color: Colors.white60),),backgroundColor: Color.fromRGBO(92, 104, 211, .8),),
+    //  appBar: AppBar(title: Text('${profile.name}',style: TextStyle(color: Colors.white),),backgroundColor: Colors.transparent),
       body: Container(
-          decoration: BoxDecoration(
+        width: double.infinity,
+
+        decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/login.png"),
-              fit: BoxFit.cover,
+              image: AssetImage("images/profile2.png"),
+              fit: BoxFit.fill,
             ),
           ),
-      child: Column(
-          children: <Widget>[
-            SizedBox(height: 30),
-        Text('${profile.name}',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
-        SizedBox(height: 10),
-            Center(
-                child: CircleAvatar(
-                    radius: 50.0,
-                    backgroundColor:
-                    Colors.white
-                        .withOpacity(
-                      0.3,
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 50,
-                    ))),
-            SizedBox(height: 50),
-        Text(
-          'Codechef Star: ${profile.cc_rank}  \nRank on HackerEarth: ${profile.he_rank} \nPoints in APK Month: ${profile.apk_points}  \nFields of Interest: ${profile.interests} \nContact number: ${profile.pno}',
-          style: TextStyle(color: Color.fromRGBO(92, 104, 211, .5),fontSize: 20,fontStyle: FontStyle.italic,),),
-            SizedBox(height: 40),
-            RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            color:  Color.fromRGBO(92, 104, 211, .5),
-            child: Text(
-              'To-do List',
-              style: TextStyle(color: Colors.white, fontSize: 20.0),
-            ),
-            onPressed: (){} //=> Navigator.push(context, MaterialPageRoute(builder: (context)=>TodoList()),),
-          ),
-    ])));}}
+      child: Container(
+        child: Column(
+            children: <Widget>[
+              SizedBox(height: 300),
+          Text('${profile.name}',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
+              SizedBox(height: 20),
+          Text(
+            'Codechef Star: ${profile.cc_rank}  \nRank on HackerEarth: ${profile.he_rank} \nPoints in APK Month: ${profile.apk_points}  \nFields of Interest: ${profile.interests} \nContact number: ${profile.pno}',
+            style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
+              SizedBox(height: 40),
+            //   RaisedButton(
+            //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            //   color:  Colors.white,
+            //   child: Text(
+            //     'To-do List',
+            //     style: TextStyle(color: Colors.indigo[900], fontSize: 20.0),
+            //   ),
+            //   onPressed: (){} //=> Navigator.push(context, MaterialPageRoute(builder: (context)=>TodoList()),),
+            // ),
+    ]),
+    )));}}

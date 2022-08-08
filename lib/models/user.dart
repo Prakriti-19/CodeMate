@@ -1,6 +1,7 @@
 class Usser {
   final String uid;
-  Usser({required this.uid });
+
+  Usser({required this.uid,});
 }
 class UserData {
   final String uid;

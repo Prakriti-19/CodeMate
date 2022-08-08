@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:task/screens/authentication/signin.dart';
 import 'package:task/screens/authentication/register.dart';
-class Welcome extends StatefulWidget {
+class Welcom extends StatefulWidget {
   // final Function toggleView;
   // Welcome({required this.toggleView});
   @override
-  _WelcomeState createState() => _WelcomeState();
+  _WelcomState createState() => _WelcomState();
 }
 
-class _WelcomeState extends State<Welcome> {
+class _WelcomState extends State<Welcom> {
   Widget buildLogInBtn() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 25),
+      padding: EdgeInsets.symmetric(vertical: 25,horizontal: 25),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>signIn()),),
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(25),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: Colors.white,
+        color: Colors.deepPurple,
         child: Text(
           'SIGNIN',
           style: TextStyle(
-              color: Colors.purple[400],
+              color:  Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold),
         ),
@@ -33,18 +33,18 @@ class _WelcomeState extends State<Welcome> {
 
   Widget buildRegisterBtn() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 25),
+      padding: EdgeInsets.symmetric(vertical: 25,horizontal: 25),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>Register()),),
         padding: EdgeInsets.all(25),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: Colors.purple[400],
+        color: Colors.deepPurple,
         child: Text(
           'REGISTER',
           style: TextStyle(
-              color: Color.fromRGBO(0, 29, 30, 11.8),
+              color:  Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold),
         ),
@@ -62,7 +62,7 @@ class _WelcomeState extends State<Welcome> {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/login.png"),
+                  image: AssetImage("images/wel.png"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -79,11 +79,12 @@ class _WelcomeState extends State<Welcome> {
                   Text(
                     'Welcome Codies',
                     style: TextStyle(
+                      //fontFamily: 'Mochiy Pop P One',
                         color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 250),
+                  SizedBox(height: 130),
                   buildLogInBtn(),
                   SizedBox(height: 5),
                   buildRegisterBtn(),

@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:task/models/user.dart';
 import 'package:task/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:task/shared/constraints.dart';
-import 'package:task/screens/home/home.dart';
+//import 'package:task/screens/home/home.dart';
 import 'package:task/homeScreen.dart';
 class update extends StatefulWidget {
   const update({Key? key}) : super(key: key);
@@ -19,12 +20,13 @@ class _updateState extends State<update> {
   int current_apk_points = 0;
   String current_interests='';
   String pno='';
-  String uid='';
+//  String uid='';
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Usser?>(context);
     final List<String> cc_rank = ['*', '**', '***', '****', '*****','******','*******'];
+    final List<String> interests = ['Web Development','App Development','Cyber Security','Design','Open Source','AI/ML'];
     return Scaffold(
         body:Container(
             height: double.infinity,
@@ -61,7 +63,7 @@ class _updateState extends State<update> {
                           items: cc_rank.map((cc_rank) {
                             return DropdownMenuItem(
                               value: cc_rank,
-                              child: Text('$cc_rank codechef stars'),
+                              child: Text('$cc_rank stars'),
                             );
                           }).toList(),
                           onChanged: (val) =>
@@ -84,12 +86,16 @@ class _updateState extends State<update> {
                       ),
                       SizedBox(height: 20.0),
                       Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Your interests'),
-                        validator: (val) =>
-                        val!.isEmpty ? 'please enter your interests' : null,
-                        onChanged: (val) => setState(() => current_interests = val),
-                      ),
+                      DropdownButtonFormField(
+                          decoration: textInputDecoration.copyWith(hintText: 'Intersets'),
+                          items: interests.map((interests) {
+                            return DropdownMenuItem(
+                              value: interests,
+                              child: Text('$interests'),
+                            );
+                          }).toList(),
+                          onChanged: (val) =>
+                              setState(() => current_interests = val! as String)),
                       SizedBox(height: 20.0),
                       Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
                       TextFormField(
@@ -114,7 +120,8 @@ class _updateState extends State<update> {
                               current_he_rank ,
                               current_interests,
                               pno,
-                            );}
+                            );
+    }
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
                           //}
                         },

@@ -1,4 +1,5 @@
 class Profile {
+  final String uid;
   final String name;
   final String cc_rank;
   final int he_rank;
@@ -6,7 +7,9 @@ class Profile {
   final String interests;
   final String pno;
   Profile(
-      {required this.name,
+      {
+        required this.uid,
+        required this.name,
         required this.cc_rank,
         required this.he_rank,
         required this.apk_points,

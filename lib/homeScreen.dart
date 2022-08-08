@@ -1,425 +1,519 @@
-//update
-//profile
-//chat
-//to-do
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:task/screens/home/prcodies_display.dart';
+import 'package:task/screens/home/profilelist.dart';
 import 'package:task/screens/home/update.dart';
-import 'package:task/screens/home/userprofile.dart';
+import 'package:task/screens/utube/AppD.dart';
+import 'package:task/screens/utube/WebD.dart';
+import 'package:task/screens/utube/aiml.dart';
+import 'package:task/screens/utube/blockchain.dart';
+import 'package:task/screens/utube/design.dart';
+import 'package:task/services/carousel.dart';
+import 'package:task/videoplayer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:task/services/auth.dart';
+import 'models/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+FirebaseAuth auth = FirebaseAuth.instance;
+final User user = auth.currentUser!;
+
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _auth = AuthService();
-  String cat = '';
+  String cat = "";
+  int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     final Shader _linearGradient = LinearGradient(
-      colors: [Colors.purpleAccent, Colors.indigo],
+      colors: [
+        Colors.lightBlueAccent,
+        Colors.blue,
+        Colors.indigo,
+        Colors.deepPurple
+      ],
       begin: Alignment.centerLeft,
       end: Alignment.bottomRight,
     ).createShader(Rect.fromLTWH(0.0, 0.0, 320.0, 80.0));
+
     return Scaffold(
-        body: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(height: 30.0),
-          Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Text(
-            'Heyy, What Are You \nLooking For?',
-            style: TextStyle(
-                foreground: Paint()..shader = _linearGradient,
-                fontSize: 26,
-                fontWeight: FontWeight.bold),
-          )),
-                  Container(
-                    child: TextField(
-                      cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.search,
-                              color:Colors.purple[700],
-                            ),
-                            onPressed: () {}),
-                        fillColor: Colors.deepPurple[100],
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none), // OutlineInputBo
-                        hintText: '   Search ',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+      backgroundColor: Color.fromRGBO(33, 57, 89, 1),
+      drawer: mDrawer(
+        user: user,
+      ), //DrawerHeader
+      body: Builder(
+          builder: (context) => SingleChildScrollView(
+                  child: SafeArea(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //SizedBox(height: 9.0),
+                      Row(
+                        children: [
+                          IconButton(
+                              icon: new Icon(
+                                Icons.menu,
+                                color: Colors.white,
+                              ),
+                              onPressed: () =>
+                                  Scaffold.of(context).openDrawer()),
+                          SizedBox(
+                            width: 260,
+                          ),
+                          IconButton(
+                              icon: new Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => update()),
+                                );
+                              })
+                        ],
                       ),
-                      onChanged: (val) {
-                        setState(() => cat = val);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 18),
-            Padding(
-                padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child:Text(
-                    'Categories',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        foreground: Paint()..shader = _linearGradient, fontSize: 21, fontWeight: FontWeight.bold),
-                  ),),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Container(
-                      height: 50,
-                      child:
-                      ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-                        Container(
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-                                color: Colors.purpleAccent[100],
-                                textColor: Colors.purple[700],
-                                child: Text(
-                                  'AppD',
-                                ),
-                                onPressed: () {})),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                            child: FlatButton(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6))),
-                                color: Colors.purpleAccent[100],
-                                textColor: Colors.purple[700],
-                                child: Text(
-                                  'WebD',
+
+                      SizedBox(height: 4.0),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: Container(
+                          height: 50,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.search,
+                                  color: Color.fromRGBO(33, 57, 89, 1),
                                 ),
                                 onPressed: () {
-                                  //Navigator.push(
-                                  // context, MaterialPageRoute(builder: (context) => p_display(cat: 'books')));
-                                })),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                            child: FlatButton(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2))),
-                                color: Colors.purpleAccent[100],
-                                textColor: Colors.purple[700],
-                                child: Text(
-                                  'AI/ML',
-                                ),
-                                onPressed: () {})),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                            child: FlatButton(
-                                color: Colors.purpleAccent[100],
-                                textColor: Colors.purple[700],
-                                child: Text(
-                                  'Blockchain',
-                                ),
-                                onPressed: () {})),
-                        SizedBox(
-                          height: 20,
-                          width: 10,
-                        ),
-                        Container(
-                            child: FlatButton(
-                                color: Colors.purpleAccent[100],
-                                textColor: Colors.purple[700],
-                                child: Text(
-                                  'Design',
-                                ),
-                                onPressed: () {})),
-                      ])),
-                  SizedBox(
-                    height: 17,
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                    child:Text(
-                      'Upcoming Contests',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          foreground: Paint()..shader = _linearGradient, fontSize: 21, fontWeight: FontWeight.bold),
-                    ),),
-                  Row(
-                    children: [
-                      Padding(padding: EdgeInsets.fromLTRB(25, 0, 0, 0)),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 3.0,
-                        height: MediaQuery.of(context).size.height / 6,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('images/codechef.png'),
-                                fit: BoxFit.fitWidth)),
-                      ),
-                      Padding(padding: EdgeInsets.fromLTRB(25, 0, 0, 0)),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 3.0,
-                        height: MediaQuery.of(context).size.height / 6,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('images/codeforces.png'),
-                                fit: BoxFit.fitWidth)),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width / 5, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 3.0,
-                            height: MediaQuery.of(context).size.height / 6,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage('images/hackerearth.png'),
-                                    fit: BoxFit.fitWidth)),
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(padding: EdgeInsets.fromLTRB(25, 0, 0, 0)),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 3.0,
-                        //height: MediaQuery.of(context).size.height / 4,
-                        child: new InkWell(
-                            child: new Text('Check out now',style: TextStyle(foreground: Paint()..shader = _linearGradient, fontSize: 11,),),
-                            onTap: () => launch(
-                                'https://www.codechef.com/contests?itm_medium=navmenu&itm_campaign=allcontests')),
-                      ),
-                      Padding(padding: EdgeInsets.fromLTRB(25, 0, 0, 0)),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 3.0,
-                        //height: MediaQuery.of(context).size.height / 4,
-                        child: new InkWell(
-                            child: new Text('Check out now',style: TextStyle(foreground: Paint()..shader = _linearGradient, fontSize: 11,),),
-                            onTap: () => launch(
-                                'https://codeforces.com/contests')),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width / 6.5, 10.0, 0.0, 0.0)),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 3.0,
-                        //height: MediaQuery.of(context).size.height / 4,
-                        child: new InkWell(
-                            child: new Text('Check out now',style: TextStyle(foreground: Paint()..shader = _linearGradient, fontSize: 11, ),),
-                            onTap: () =>
-                                launch('https://www.hackerearth.com/challenges/')),
-                      ),
-                    ],
-                  ),
-
-          SizedBox(height: 10.0),
-          RaisedButton(
-              color: Color.fromRGBO(0, 29, 30, 11.8),
-              onPressed: () {
-                User? user = FirebaseAuth.instance.currentUser;
-                if (user != null) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => ProfilePage(
-                        user: user,
-                      ),
-                    ),
-                  );
-                }
-              }),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                    child:Text(
-                      'New Recomendations',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          foreground: Paint()..shader = _linearGradient, fontSize: 21, fontWeight: FontWeight.bold),
-                    ),),
-                  SizedBox(
-                    height: 10,
-                  ),
-
-          Container(
-              height: 125,
-              child:
-                  ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-                SizedBox(
-                  height: 4,
-                  width: 8,
-                ),
-                Container(
-                  width: 150,
-                  padding: EdgeInsets.fromLTRB(2, 7, 2, 17),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                      image: AssetImage("images/b.png"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                  width: 14,
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(2, 2, 2, 7),
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                      image: AssetImage("images/a.png"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                  width: 14,
-                ),
-                Container(
-                  padding: EdgeInsets.all(5.0),
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                      image: AssetImage("images/x.jpeg"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                  width: 8,
-                ),
-              ])),
-
-          SizedBox(
-            height: 17,
-          ),
-
-          Text(
-            'You May Also Like',
-            style: TextStyle(
-                color: Colors.black, fontSize: 21, fontWeight: FontWeight.bold),
-          ),
-
-          SizedBox(
-            height: 16,
-          ),
-
-          Container(
-              height: 185,
-              child:
-                  ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-                SizedBox(
-                  height: 4,
-                  width: 6,
-                ),
-                Container(
-                  width: 200,
-                  padding: EdgeInsets.fromLTRB(2, 7, 2, 17),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    image: DecorationImage(
-                        image: AssetImage("images/p.png"), fit: BoxFit.fill),
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                  width: 10,
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(2, 2, 2, 7),
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    image: DecorationImage(
-                        image: AssetImage("images/h.png"), fit: BoxFit.fill),
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                  width: 10,
-                ),
-                Container(
-                  padding: EdgeInsets.all(5.0),
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    image: DecorationImage(
-                        image: AssetImage("images/f.png"), fit: BoxFit.fill),
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                  width: 6,
-                ),
-              ])),
-        ])),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 0,
-          child: Container(
-              height: 50,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MaterialButton(
-                              minWidth: 40,
-                              onPressed: () {},
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.home_outlined),
-                                    Text('HOME',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ))
-                                  ])),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          MaterialButton(
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.add),
-                                    Text('Update',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ))
-                                  ]),
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) =>update()),);
-                              }),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          FlatButton.icon(
-                            icon: Icon(Icons.person,color: Color.fromRGBO(92, 104, 211, .5)),
-                            label: Text('logout',style: TextStyle(color: Color.fromRGBO(92, 104, 211, .5)),),
-                            onPressed: () async {
-                              await _auth.signOut();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              p_display(interests: cat)));
+                                },
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide:
+                                      BorderSide.none), // OutlineInputBo
+                              hintText: ' Search ',
+                              hintStyle: TextStyle(
+                                  color: Color.fromRGBO(33, 57, 89, 1),
+                                  fontSize: 17),
+                            ),
+                            onChanged: (val) {
+                              setState(() => cat = val);
                             },
                           ),
-                        ])
-                  ])),
-        ));
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          height: 170,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("images/hs.png"),
+                                fit: BoxFit.fill),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(260, 45, 2, 10),
+                            child: InkWell(
+                                child: Text(
+                                  'Check out now',
+                                  style: TextStyle(
+                                    fontFamily: 'Mochiy Pop P One',
+                                    color: Colors.transparent,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileList()),
+                                  );
+                                }),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(9, 0, 0, 0),
+                        child: Text(
+                          'Wings',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              //fontFamily: 'Mochiy Pop P One',
+                              // foreground: Paint()..shader = _linearGradient,
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                          height: 50,
+                          child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: <Widget>[
+                                Container(
+                                    child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8))),
+                                        color: Colors.lightBlue[100],
+                                        textColor: Colors.indigo,
+                                        child: Text(
+                                          'AppD',
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AppD()));
+                                        })),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                    child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8))),
+                                        color: Colors.lightBlue[100],
+                                        textColor: Colors.indigo,
+                                        child: Text(
+                                          'WebD',
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WebD()));
+                                        })),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                    child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8))),
+                                        color: Colors.lightBlue[100],
+                                        textColor: Colors.indigo,
+                                        child: Text(
+                                          'AI/ML',
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Aiml()));
+                                        })),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                    child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8))),
+                                        color: Colors.lightBlue[100],
+                                        textColor: Colors.indigo,
+                                        child: Text(
+                                          'Open Source',
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Blockchain()));
+                                        })),
+                                SizedBox(
+                                  height: 20,
+                                  width: 10,
+                                ),
+                                Container(
+                                    child: FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8))),
+                                        color: Colors.lightBlue[100],
+                                        textColor: Colors.indigo,
+                                        child: Text(
+                                          'Design',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Design()));
+                                        })),
+                              ])),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Text(
+                          'Upcoming Contests',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              //fontFamily: 'Mochiy Pop P One',
+                              //foreground: Paint()..shader = _linearGradient,
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              height: 170,
+                              child: Swiper(
+                                viewportFraction: 1,
+                                onIndexChanged: (index) {
+                                  setState(() {
+                                    _current = index;
+                                  });
+                                },
+                                autoplay: true,
+                                layout: SwiperLayout.DEFAULT,
+                                itemCount: carousels.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Container(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: Container(
+                                        //padding: EdgeInsets.fromLTRB(20, 130, 6, 6),
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0, 130, 140, 6),
+                                          decoration: BoxDecoration(
+                                            //color: Colors.pink,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 5, 90, 10),
+                                            child: InkWell(
+                                                child: Center(
+                                                  child: Text(
+                                                    'Check out now',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Mochiy Pop P One',
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 10,
+                                                    ),
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  launch(linkData[index]);
+                                                }),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                              carousels[index].image,
+                                            ),
+                                            fit: BoxFit.cover)),
+                                  );
+                                },
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(9, 8, 0, 0),
+                        child: Text(
+                          'New Recomendations',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              //fontFamily: 'Mochiy Pop P One',
+                              //foreground: Paint()..shader = _linearGradient,
+                              color: Colors.white,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                          height: 185,
+                          child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 4,
+                                  width: 6,
+                                ),
+                                Container(
+                                  width: 300,
+                                  padding: EdgeInsets.fromLTRB(2, 7, 2, 17),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    image: DecorationImage(
+                                        image: AssetImage("images/p.jpg"),
+                                        fit: BoxFit.fill),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 5, 2, 10),
+                                    child: InkWell(
+                                        child: Text(
+                                          'Check out now',
+                                          style: TextStyle(
+                                            fontFamily: 'Mochiy Pop P One',
+                                            color: Colors.transparent,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 80,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Videopage(
+                                                    cat:
+                                                        'https://www.youtube.com/watch?v=1vsmaEfbnoE')),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                  width: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 7),
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    image: DecorationImage(
+                                        image: AssetImage("images/h.jpg"),
+                                        fit: BoxFit.fill),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 5, 2, 10),
+                                    child: InkWell(
+                                        child: Text(
+                                          'Check out now',
+                                          style: TextStyle(
+                                            fontFamily: 'Mochiy Pop P One',
+                                            color: Colors.transparent,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 80,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Videopage(
+                                                    cat:
+                                                        'https://www.youtube.com/watch?v=THp_EowtJ0M')),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                  width: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(5.0),
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    image: DecorationImage(
+                                        image: AssetImage("images/f.png"),
+                                        fit: BoxFit.fill),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 5, 2, 10),
+                                    child: InkWell(
+                                        child: Text(
+                                          'Check out now',
+                                          style: TextStyle(
+                                            fontFamily: 'Mochiy Pop P One',
+                                            color: Colors.transparent,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 50,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Videopage(
+                                                    cat:
+                                                        'https://www.youtube.com/watch?v=d0wsoY6meBY')),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                  width: 6,
+                                ),
+                              ])),
+                    ]),
+              ))),
+    );
   }
 }
