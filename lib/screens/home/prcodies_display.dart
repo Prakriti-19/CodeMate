@@ -23,6 +23,7 @@ class _p_displayState extends State<p_display> {
   List<int> profileapk=[];
   List<String> profileinterests=[];
   List<String> profilepno=[];
+  List<String> profileg=[];
 
   int c=0;
   Widget build(BuildContext context) {
@@ -68,6 +69,13 @@ class _p_displayState extends State<p_display> {
        }
      });
    });
+    _usersStream.forEach((profile){
+      profile.docs.asMap().forEach((index,data){
+        if ((profile.docs[index]['interests']).toString().trim()==(interests).toString().trim()){
+          profileg.add(profile.docs[index]['gender']);
+        }
+      });
+    });
    _usersStream.forEach((profile){
      profile.docs.asMap().forEach((index,data){
        if ((profile.docs[index]['interests']).toString().trim()==(interests).toString().trim()) {
@@ -127,7 +135,7 @@ class _p_displayState extends State<p_display> {
                 return Flash();
               }
               else{
-                final profile = List<Profile>.generate(c, (i) => Profile(name: profileName[i], cc_rank: profilecc[i],he_rank: profileherank[i], apk_points: profileapk[i], interests: profileinterests[i] , pno:profilepno[i], uid: ''),);
+                final profile = List<Profile>.generate(c, (i) => Profile(gender: profileg[i],name: profileName[i], cc_rank: profilecc[i],he_rank: profileherank[i], apk_points: profileapk[i], interests: profileinterests[i] , pno:profilepno[i], uid: '', email: ''),);
                 return ListView.builder(
                   itemCount: profile.length,
                   itemBuilder: (context, index) {

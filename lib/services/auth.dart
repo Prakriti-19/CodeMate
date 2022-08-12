@@ -16,7 +16,7 @@ class AuthService {
     try{
       UserCredential result=await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user=result.user;
-      await DatabaseService(uid: user!.uid).updateUserData('newTeammate','*',0,0,'competitive coding','0000000000');
+      await DatabaseService(uid: user!.uid).updateUserData('Male','newTeammate','*',0,0,'competitive coding','0000000000');
       return _userFormFirebaseUser(user);
     }
     catch(e){
@@ -30,7 +30,7 @@ class AuthService {
       User? user=result.user;
       FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
         "uid": user?.uid,});
-      await DatabaseService(uid: user!.uid).updateUserData('newTeammate','*',0,0,'competitive coding','0000000000');
+      await DatabaseService(uid: user!.uid).updateUserData('Male','newTeammate','*',0,0,'competitive coding','0000000000');
       return _userFormFirebaseUser(user);
     }
     catch(e){

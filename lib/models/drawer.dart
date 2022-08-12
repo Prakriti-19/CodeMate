@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:task/chat.dart';
 import 'package:task/screens/home/profilelist.dart';
 import 'package:task/screens/home/userprofile.dart';
 import '../screens/home/update.dart';
@@ -39,6 +40,10 @@ class _mDrawerState extends State<mDrawer> {
         .collection('profile')
         .doc(_currentUser.uid)
         .update({'uid': _currentUser.uid});
+    FirebaseFirestore.instance
+        .collection('profile')
+        .doc(_currentUser.uid)
+        .update({'email': _currentUser.email});
     int c = 0;
     final Stream<QuerySnapshot> _usersStream =
         FirebaseFirestore.instance.collection('profile').snapshots();
@@ -160,7 +165,7 @@ class _mDrawerState extends State<mDrawer> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => update()),
+                      MaterialPageRoute(builder: (context) => chatHome()),
                     );
                   },
                 ),

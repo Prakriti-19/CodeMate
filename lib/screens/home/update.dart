@@ -4,7 +4,6 @@ import 'package:task/models/user.dart';
 import 'package:task/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:task/shared/constraints.dart';
-//import 'package:task/screens/home/home.dart';
 import 'package:task/homeScreen.dart';
 class update extends StatefulWidget {
   const update({Key? key}) : super(key: key);
@@ -15,12 +14,13 @@ class update extends StatefulWidget {
 
 class _updateState extends State<update> {
   String _currentName = '';
+  String gender = '';
   String current_cc_rank = '';
   int current_he_rank = 0;
   int current_apk_points = 0;
   String current_interests='';
-  String pno='';
-//  String uid='';
+  String pno= '';
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -58,6 +58,40 @@ class _updateState extends State<update> {
                       ),
                       SizedBox(height: 20.0),
                       Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
+                      Row(
+                        children: [
+                          Text('Male',style: TextStyle(color: Colors.white),),
+                          Radio(
+                            value: "male",
+                            groupValue: gender,
+                            onChanged: (value){
+                              setState(() {
+                                gender = value.toString();
+                              });
+                            },
+                          ),
+                          Text('Female',style: TextStyle(color: Colors.white),),
+                          Radio(
+                            value: "female",
+                            groupValue: gender,
+                            onChanged: (value){
+                              setState(() {
+                                gender = value.toString();
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.0),
+                      Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
+                      TextFormField(
+                        decoration: textInputDecoration.copyWith(hintText: 'Your contact number'),
+                        validator: (val) =>
+                        val!.isEmpty ? 'please enter your contact number' : null,
+                        onChanged: (val) => setState(() => pno= val),
+                      ),
+                      SizedBox(height: 20.0),
+                      Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
                       DropdownButtonFormField(
                           decoration: textInputDecoration.copyWith(hintText: 'Codechef Stars'),
                           items: cc_rank.map((cc_rank) {
@@ -87,7 +121,7 @@ class _updateState extends State<update> {
                       SizedBox(height: 20.0),
                       Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
                       DropdownButtonFormField(
-                          decoration: textInputDecoration.copyWith(hintText: 'Intersets'),
+                          decoration: textInputDecoration.copyWith(hintText: 'Interests'),
                           items: interests.map((interests) {
                             return DropdownMenuItem(
                               value: interests,
@@ -96,14 +130,6 @@ class _updateState extends State<update> {
                           }).toList(),
                           onChanged: (val) =>
                               setState(() => current_interests = val! as String)),
-                      SizedBox(height: 20.0),
-                      Padding(padding: EdgeInsets.only(left: 20.0,right: 20.0),),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Your contact number'),
-                        validator: (val) =>
-                        val!.isEmpty ? 'please enter your contact number' : null,
-                        onChanged: (val) => setState(() => pno= val),
-                      ),
                       SizedBox(height: 20.0),
                       RaisedButton(
                         color: Colors.white,
@@ -114,6 +140,7 @@ class _updateState extends State<update> {
                         onPressed: () async{
                           if (_formKey.currentState!.validate()) {
                             await DatabaseService(uid: user!.uid).updateUserData(
+                              gender,
                               _currentName ,
                               current_cc_rank ,
                               current_apk_points ,

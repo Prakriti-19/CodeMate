@@ -39,19 +39,86 @@ class _UserprofState extends State<Userprof> {
                   SizedBox(height:50),
                   Text('${name}',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
                   SizedBox(height: 20),
-                  Text(
-                    'Codechef Star: ${cc}  \nRank on HackerEarth: ${he} \nPoints in APK Month: ${apk}  \nFields of Interest: ${interests} \nContact number: ${pno}',
-                    style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
-                  SizedBox(height: 40),
-                  RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      color:  Colors.white,
-                      child: Text(
-                        'Edit',
-                        style: TextStyle(color: Colors.indigo[900], fontSize: 20.0),
-                      ),
-                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>update()));},
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Codechef Stars: ',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
+                      Text(
+                        ' ${cc}',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500,),),
+                    ],
                   ),
+                  SizedBox(height: 5),
+                  Row( mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hackerearth Rank: ',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
+                      Text(
+                        ' ${he}',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500,),),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row( mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Apk Points: ',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
+                      Text(
+                        ' ${apk}',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500,),),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row( mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Contact No.: ',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
+                      Text(
+                        ' ${pno}',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500,),),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row( mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Interests: ',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontStyle: FontStyle.italic,),),
+                      Text(
+                        ' ${interests}',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500,),),
+                    ],
+                  ),
+                  SizedBox(height: 40),
+
+                   Row( mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       RaisedButton(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            color:  Colors.white,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.edit,
+                                  color: Colors.indigo[900],
+                                  size: 19.0,
+                                ),
+                                Text(
+                                  'Edit',
+                                  style: TextStyle(color: Colors.indigo[900], fontSize: 20.0),
+                                ),
+                              ],
+                            ),
+                            onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>update()));},
+                        ),
+                     ],
+                   ),
+
                 ]),
           )),
     );

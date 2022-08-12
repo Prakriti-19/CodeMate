@@ -9,10 +9,10 @@ class DatabaseService {
   final CollectionReference profileCollection =
   FirebaseFirestore.instance.collection('profile');
 
-  Future<void> updateUserData(String name, String cc_rank, int he_rank,
+  Future<void> updateUserData(String gender, String name, String cc_rank, int he_rank,
       int apk_points, String interests, String pno) async {
     return await profileCollection.doc(uid).set({
-      //'uid':uid,
+      'gender':gender,
       'name': name,
       'cc_rank': cc_rank,
       'he_rank': he_rank,
@@ -25,7 +25,7 @@ class DatabaseService {
   List<Profile> _profilelistFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Profile(
-       // uid: doc.docsID,
+        gender: doc['gender'] ?? '',
         name: doc['name'] ?? '',
         cc_rank: doc['cc_rank'],
         he_rank: doc['he_rank'] ?? 0,
@@ -33,6 +33,7 @@ class DatabaseService {
         interests: doc['interests'] ?? '',
         pno: doc['pno'] ?? '',
         uid: '0',
+        email: '0',
       );
     }).toList();
   }

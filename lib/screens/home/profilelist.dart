@@ -41,6 +41,7 @@ class _ProfileListState extends State<ProfileList> with SingleTickerProviderStat
   List<int> profileherank=[];
   List<int> profileapk=[];
   List<String> profileinterests=[];
+  List<String> profileg=[];
   List<String> profilepno=[];
   
   Widget build(BuildContext context) {
@@ -63,6 +64,11 @@ class _ProfileListState extends State<ProfileList> with SingleTickerProviderStat
         profileherank.add(profile.docs[index]['he_rank']);
         print(profileherank[index]);
       });
+    });
+    _usersStream.forEach((profile){
+      profile.docs.asMap().forEach((index,data){
+          profileg.add(profile.docs[index]['gender']);
+        });
     });
     _usersStream.forEach((profile){
       profile.docs.asMap().forEach((index,data){
@@ -119,7 +125,7 @@ class _ProfileListState extends State<ProfileList> with SingleTickerProviderStat
                     return Text('snapshot does not have data');
                   }
                   else {
-                    final profile = List<Profile>.generate(c, (i) => Profile(name: profileName[i], cc_rank: profilecc[i],he_rank: profileherank[i], apk_points: profileapk[i], interests: profileinterests[i] , pno:profilepno[i], uid: ''),);
+                    final profile = List<Profile>.generate(c, (i) => Profile(gender: profileg[i],name: profileName[i], cc_rank: profilecc[i],he_rank: profileherank[i], apk_points: profileapk[i], interests: profileinterests[i] , pno:profilepno[i], uid: '', email: ''),);
                     return AnimatedList(
                       key: _listKey,
                       initialItemCount: profile.length,

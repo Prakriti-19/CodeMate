@@ -1,5 +1,7 @@
 class Profile {
   final String uid;
+  final String gender;
+  final String email;
   final String name;
   final String cc_rank;
   final int he_rank;
@@ -8,6 +10,8 @@ class Profile {
   final String pno;
   Profile(
       {
+        required this.gender,
+        required this.email,
         required this.uid,
         required this.name,
         required this.cc_rank,

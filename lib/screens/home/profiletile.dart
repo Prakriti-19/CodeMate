@@ -15,8 +15,16 @@ class profileTile extends StatefulWidget {
 class _profileTileState extends State<profileTile> {
   Tween<Offset> _offset =Tween(begin : Offset (1, 0), end: Offset (0, 0));
 
+
   @override
   Widget build(BuildContext context) {
+    Profile profile=widget.profile;
+    String a=profile.gender;
+    String image;
+    if(a=='Female')
+      image = "images/female.png";
+    else
+      image = "images/male.png";
     return AnimatedContainer(
       duration: Duration(microseconds: 200),
         child: Padding(
@@ -31,7 +39,7 @@ class _profileTileState extends State<profileTile> {
                   ),
                   CircleAvatar(
                     radius: 28,
-                    backgroundImage: AssetImage('images/user.png'),
+                    backgroundImage: AssetImage(image),
                   ),
 
                   SizedBox(
